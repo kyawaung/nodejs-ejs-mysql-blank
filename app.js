@@ -27,15 +27,24 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+//error handler for ajax
+app.use(function(err, req, res, next){
+  if(req.xhr){
+    res.status(err.status || 500).send(err.message);
+  }else {
+    next(err);
+  }
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+console.log( req.app.get('env')+']',  res.locals.error);
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error' +( (err.status == 404)?'-404':''));
 });
 
 module.exports = app;
