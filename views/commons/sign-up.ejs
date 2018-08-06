@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <h1>Sign Up</h1>
+    <form id="sign_up" action="/signup" method="post">
+      Name: <input type="text" name="name" value="" required><p>
+      Email: <input type="email" name="email" value="" required><p>
+      Password: <input type="password" name="password" value="password" required><p>
+      Confirm Password: <input type="password" name="repassword" value="repassword" required><p>
+      <input type="submit" name="button" value="Signup">
+    </form>
+    <script src="/js/jquery.min.js" charset="utf-8"></script>
+    <script src="/js/jquery.validate.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    $(function () {
+        $.validator.addMethod("pwcheck", function(value) {
+              return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                  && /[a-z]/.test(value) // has a lowercase letter
+                  && /[A-Z]/.test(value) // has a uppercase letter
+                  && /\d/.test(value) // has a digit
+        });
+        $('#sign_up').validate({
+            rules: {
+                'repassword': {
+                    equalTo: '[name="password"]'
+                },
+                'password': {
+                  pwcheck: true,
+                }
+            },
+            messages: {
+              password: {
+                pwcheck: "Please input at least 1 Upper, 1 Lover, 1 digit...",
+              }
+            },
+          });
+          <% if(messages.warn){ %>
+            alert('<%=messages.warn%>');
+          <%
+          }
+          %>
+        });
+    </script>
+  </body>
+</html>
