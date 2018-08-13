@@ -32,6 +32,12 @@ app.use(session({
 }));
 app.use(flash()); // after cookie, session
 
+//Set session for EJS // after session, before routing
+app.use(function(req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -54,7 +60,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-console.log( req.app.get('env')+']',  res.locals.error);
+
   // render the error page
   res.status(err.status || 500);
   res.render('commons/error' +( (err.status == 404)?'-404':''));
