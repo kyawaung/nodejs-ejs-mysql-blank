@@ -7,6 +7,7 @@
   <body>
     <h1>Sign In</h1>
     <form  action="/signin" method="post">
+      <input type="hidden" name="forward" value="<%=locals.messages.forward%>">
       Email: <input type="email" id="email" name="email" value="" required><p>
       Password: <input type="password" id="password" name="password" value="" required><p>
       <label><input type="checkbox" name="rememberme" id="rememberme">Remember Me</label><br>
@@ -20,7 +21,7 @@
     }
     %>
     <% if(email) {%>
-      $('#rememberme').prop("checkd", true);
+      $('#rememberme').prop("checked", true);
       $('#email').val('<%=email%>');
       $('#password').focus();
     <% } %>
