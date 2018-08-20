@@ -42,6 +42,10 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 // session check for members, admin...
 app.use(function(req, res, next) {
+  // TODO need to delete - for test : set session
+  req.session.user = {
+    nid:2, name: 'ADMIN', email: 'nay@gmail.com', role: 'ADMIN'
+  };
   if(req.session.user){
     next();
   }else{
