@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var users = require('./user');
 
 /*  admin role check. */
 router.use('/', function(req, res, next) {
@@ -15,5 +16,7 @@ router.use('/', function(req, res, next) {
 router.get('/', function(req, res, next) {
   res.render('admin/home');
 });
+
+router.use('/users', users);
 
 module.exports = router;
