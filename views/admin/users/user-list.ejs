@@ -17,6 +17,8 @@ table, th, td {
   <body>
     <h1>User List</h1>
     <form id="frm" action="/admin/users/list" method="post">
+      <input type="hidden" name="sortField" id="sortField" value="<%= sort.field %>">
+      <input type="hidden" name="sortOrder" id="sortOrder" value="<%= sort.order %>">
       <select class="" name="role">
         <option value="">All</option>
         <option value="Admin">Admin</option>
@@ -29,10 +31,10 @@ table, th, td {
       <thead>
         <tr>
           <th>No</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Update</th>
+          <th data-sort="name">Name</th>
+          <th data-sort="email">Email</th>
+          <th data-sort="role">Role</th>
+          <th data-sort="updated">Updated</th>
         </tr>
       </thead>
       <tbody>
@@ -42,7 +44,7 @@ table, th, td {
           <%for(i=0; i < users.length; i++){%>
           <tr>
             <td><%=i+1%></td>
-            <td><%= users[i].name %></td>
+            <td><a href="/admin/users/view/<%= users[i].nid %>"><%= users[i].name %></a></td>
             <td><%= users[i].email %></td>
             <td><%= users[i].role %></td>
             <td><%= users[i].updated %></td>
@@ -52,9 +54,25 @@ table, th, td {
       </tbody>
     </table>
   </body>
+  <script src="/js/jquery.min.js" charset="utf-8"></script>
   <script type="text/javascript">
     <%if(search.role){%>
       frm.role.value = '<%= search.role %>';
     <% } %>
+
+    $(function () {
+        $('th').click(function(){
+          if(!$(this).data('sort')) return false;
+          if( $('#sortField').val() == $(this).data('sort') ){
+            $('#sortOrder').val( ($(sortOrder).val() == 'ASC')?'DESC':'ASC');
+          }else{
+            $('#sortOrder').val('ASC');
+          }
+          $('#sortField').val($(this).data('sort'));
+          $('#frm').submit();
+        })
+        $('th[data-sort="<%=sort.field %>"]').append(' <%= (sort.order == 'ASC')? '\u25B2': '\u25BC' %>');
+
+    });
   </script>
 </html>
